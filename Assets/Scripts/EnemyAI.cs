@@ -9,7 +9,6 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] int damageRecieved;
     Transform playerLoc;
     NavMeshAgent agent;
-    SkinnedMeshRenderer enemyRenderer;
     GameplayUI gameplayUI;
 
 
@@ -18,7 +17,6 @@ public class EnemyAI : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         playerLoc = FindAnyObjectByType<PlayerController>().transform;
-        enemyRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
         gameplayUI = FindAnyObjectByType<GameplayUI>();
     }
 
@@ -31,10 +29,10 @@ public class EnemyAI : MonoBehaviour
 
         //Behaviour move towards player                                                                                                                 DONE
         //Give points to the player when enemy dies
-        //If enough time play animations and maybe attack player                                                                                        DONE        
+        //If enough time play animations and maybe attack player                                                                                        1/2        
         //Create a manager script that makes a pool of enemies and picks randomly a enemy from the array. Set max number of enemies generated           DONE
         //Set a timer for the game mode                                                                                                                 1/2
-        //set a points counter and maybe a enemies left counter
+        //set points count and maybe a enemies left count
         //Create a class for different enemies with values like speed, health, dmg
     }
 
@@ -43,7 +41,6 @@ public class EnemyAI : MonoBehaviour
         if (collision.gameObject.tag == "Bullets")
         {
             hp = hp - damageRecieved;
-            enemyRenderer.material.color = Color.red;
             //Debug.Log("Current hp is " + hp);
         }
     }

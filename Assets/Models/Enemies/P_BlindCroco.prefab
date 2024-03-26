@@ -9,10 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4031254214823882467}
-  - component: {fileID: 870437763893048129}
-  - component: {fileID: 7711805548240426364}
+  - component: {fileID: 6323949133002485099}
+  - component: {fileID: 4250325001269108135}
   - component: {fileID: 2895444190520993113}
   - component: {fileID: 5731637368829086569}
+  - component: {fileID: 870437763893048129}
   m_Layer: 0
   m_Name: P_BlindCroco
   m_TagString: Enemies
@@ -36,30 +37,7 @@ Transform:
   - {fileID: 8590645813424504451}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!136 &870437763893048129
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2112189121698778422}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5922569
-  m_Height: 1.972892
-  m_Direction: 1
-  m_Center: {x: 0, y: 1.006439, z: 0.2935445}
---- !u!114 &7711805548240426364
+--- !u!114 &6323949133002485099
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -68,11 +46,52 @@ MonoBehaviour:
   m_GameObject: {fileID: 2112189121698778422}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fcc65de2917f4b444be43a821b76d798, type: 3}
+  m_Script: {fileID: 11500000, guid: 5d23531d85cc33d42877e932d11d6fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 30
-  damageRecieved: 10
+  Hp: 30
+  AttackDamage: 0
+  ReactionSpeed: 2
+  AttackRange: 2
+  TargetInRange: 0
+  Scared: 0
+--- !u!114 &4250325001269108135
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2112189121698778422}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5cc9eafedd9b214a8459e000bf17bfd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveMethod: 2
+  Curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!195 &2895444190520993113
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -85,16 +104,16 @@ NavMeshAgent:
   m_Radius: 0.5
   m_Speed: 3.5
   m_Acceleration: 8
-  avoidancePriority: 50
+  avoidancePriority: 30
   m_AngularSpeed: 120
-  m_StoppingDistance: 0
+  m_StoppingDistance: 2
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 2
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
+  m_ObstacleAvoidanceType: 2
 --- !u!54 &5731637368829086569
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -118,10 +137,33 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 0
-  m_IsKinematic: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 126
   m_CollisionDetection: 0
+--- !u!136 &870437763893048129
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2112189121698778422}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5922569
+  m_Height: 1.972892
+  m_Direction: 1
+  m_Center: {x: 0, y: 1.006439, z: 0.2935445}
 --- !u!1001 &8120733017281943912
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -2,10 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] int Health;
+    [SerializeField] float RecoverTime;
+    bool isinvulnerable;
+
     [Header("Movement")]
     [SerializeField] float sensitivity;
     [SerializeField] GameObject playerCamera;
@@ -109,6 +114,25 @@ public class PlayerController : MonoBehaviour
         playerCC.Move(velocity * Time.deltaTime);
     }
 
+    public void TakeDamage(int Damage)
+    {
+        if (isinvulnerable == false)
+        {
+            Health -= Damage;
+            //Debug.Log("Player current hp is " + Health);
+            StartCoroutine(Invulnerability());
+            HealthCheck();
+        }
+    }
+
+    void HealthCheck()
+    {
+        if (Health <= 0)
+        {
+            SceneManager.LoadScene("Gym");
+        }
+    }
+
     void InitializeObjectPool()
     {
         bulletsPool = new List<GameObject>(); //Creates a new list same size as the bullets pool
@@ -158,6 +182,15 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(shootDelay);
         //Debug.Log("Ready to shoot");
         cdTimer = true;
+    }
+
+    IEnumerator Invulnerability()
+    {
+        isinvulnerable = true;
+
+        yield return new WaitForSeconds(RecoverTime);
+
+        isinvulnerable = false;
     }
 
     private void Pause()

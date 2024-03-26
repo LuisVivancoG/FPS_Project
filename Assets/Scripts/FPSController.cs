@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class FPSController : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class FPSController : MonoBehaviour
     public float rotationSpeed = 3f;
     public float jumpForce = 8f;
     public float gravity = 30f;
+    public int Health = 100;
 
     private Transform playerTransform;
     private Camera playerCamera;
@@ -85,5 +87,19 @@ public class FPSController : MonoBehaviour
         // Perform a raycast to check if the player is grounded
         float rayLength = 0.1f;
         return Physics.Raycast(playerTransform.position, Vector3.down, rayLength);
+    }
+
+    public void TakeDamage(int Damage)
+    {
+        Health -= Damage;
+        HealthCheck();
+    }
+
+    void HealthCheck()
+    {
+        if (Health <= 0)
+        {
+            SceneManager.LoadScene("Gym");
+        }
     }
 }

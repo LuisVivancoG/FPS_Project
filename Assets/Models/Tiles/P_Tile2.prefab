@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2812588417116135549}
   - component: {fileID: 2528529614965608557}
   - component: {fileID: 2732374796048257710}
+  - component: {fileID: 6869634143132302597}
   m_Layer: 3
   m_Name: P_Tile2
   m_TagString: Untagged
@@ -354,6 +355,26 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
+--- !u!114 &6869634143132302597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7420631743403505035}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6eeb5dc026fdf4b488bc7ae0138ab719, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AgentTypeID: -1372625422
+  m_StartPoint: {x: 2.5, y: 1, z: 0.5}
+  m_EndPoint: {x: 2.5, y: 5, z: 3.2000008}
+  m_Width: 9
+  m_CostModifier: -1
+  m_Bidirectional: 1
+  m_AutoUpdatePosition: 0
+  m_Area: 2
 --- !u!1 &7890453323524073307
 GameObject:
   m_ObjectHideFlags: 0

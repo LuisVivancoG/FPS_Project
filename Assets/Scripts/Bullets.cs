@@ -5,15 +5,10 @@ using UnityEngine;
 public class Bullets : MonoBehaviour
 {
     [SerializeField] int forceSpeed;
-    [SerializeField] int damage;
 
     void OnEnable()
     {
         Shoot();
-    }
-
-    private void OnDisable()
-    {
     }
 
     void Shoot()

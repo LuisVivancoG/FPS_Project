@@ -34,7 +34,7 @@ public class GameplayUI : MonoBehaviour
 
         if(txtTargetsDestroyed >= txtTotalTargets)
         {
-            doorAnim.SetBool("isOpen?", true);
+            doorAnim.SetTrigger("isOpen?");
         }
     }
 }

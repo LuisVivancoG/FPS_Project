@@ -9,10 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7010684842012748942}
-  - component: {fileID: 7280979979545897782}
-  - component: {fileID: 2830990138138586163}
+  - component: {fileID: -9025949457318018131}
+  - component: {fileID: -3130201003661965731}
   - component: {fileID: 3940657699714962295}
   - component: {fileID: 5646432635367900828}
+  - component: {fileID: 7280979979545897782}
   m_Layer: 0
   m_Name: P_BigCroco
   m_TagString: Enemies
@@ -36,30 +37,7 @@ Transform:
   - {fileID: 1891092095540740535}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!136 &7280979979545897782
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2136979558896440468}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.9626744
-  m_Height: 2.494437
-  m_Direction: 1
-  m_Center: {x: 0, y: 1.758423, z: 0.004770041}
---- !u!114 &2830990138138586163
+--- !u!114 &-9025949457318018131
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -68,11 +46,51 @@ MonoBehaviour:
   m_GameObject: {fileID: 2136979558896440468}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fcc65de2917f4b444be43a821b76d798, type: 3}
+  m_Script: {fileID: 11500000, guid: 5022a6dedc85db349b911aa4af76e4e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 50
-  damageRecieved: 10
+  Hp: 50
+  AttackDamage: 0
+  ChargeRange: 20
+  ReactionSpeed: 10
+  TargetInChargeRange: 0
+--- !u!114 &-3130201003661965731
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2136979558896440468}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5cc9eafedd9b214a8459e000bf17bfd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveMethod: 2
+  Curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!195 &3940657699714962295
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -85,7 +103,7 @@ NavMeshAgent:
   m_Radius: 1
   m_Speed: 3.5
   m_Acceleration: 8
-  avoidancePriority: 50
+  avoidancePriority: 40
   m_AngularSpeed: 120
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
@@ -94,7 +112,7 @@ NavMeshAgent:
   m_Height: 3
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
+  m_ObstacleAvoidanceType: 1
 --- !u!54 &5646432635367900828
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -118,10 +136,33 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 0
-  m_IsKinematic: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 126
   m_CollisionDetection: 0
+--- !u!136 &7280979979545897782
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2136979558896440468}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.9626744
+  m_Height: 2.494437
+  m_Direction: 1
+  m_Center: {x: 0, y: 1.758423, z: 0.004770041}
 --- !u!1001 &2140400871907534428
 PrefabInstance:
   m_ObjectHideFlags: 0
