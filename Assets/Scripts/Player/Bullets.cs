@@ -18,7 +18,7 @@ public class Bullets : MonoBehaviour
         _physicsInstance.AddForce(transform.forward * forceSpeed); //Find another way to impulse the bullets cause AddForce accumulates each time gets called, thus it is hard to controll it.
     }
 
-    private void OnCollisionEnter()
+    private void OnCollisionEnter(Collision collision)
     {
         gameObject.SetActive(false);
     }

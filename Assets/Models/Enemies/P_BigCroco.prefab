@@ -50,7 +50,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Hp: 50
-  AttackDamage: 0
+  AttackDamage: 30
+  MoveSpeed: 2
+  MoveSpeedMultiplier: 4
   ChargeRange: 20
   ReactionSpeed: 10
   TargetInChargeRange: 0

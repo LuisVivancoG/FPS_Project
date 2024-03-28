@@ -14,8 +14,8 @@ public class BlindEnemy : MonoBehaviour
     NavMeshAgent agent;
     [SerializeField] float ReactionSpeed;
     [SerializeField] float AttackRange;
-    [SerializeField] bool TargetInRange;
-    [SerializeField] bool Scared;
+    bool TargetInRange;
+    bool Scared;
     //Animator animator;
 
     PlayerController Player;

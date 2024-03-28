@@ -82,25 +82,25 @@ public class PlayerController : MonoBehaviour
 
     void CameraRotation()
     {
-        float _mouseX = Input.GetAxis("Mouse X") * sensitivity * Time.deltaTime;
-        float _mouseY = Input.GetAxis("Mouse Y") * sensitivity * Time.deltaTime;
+        float mouseX = Input.GetAxis("Mouse X") * sensitivity * Time.deltaTime;
+        float mouseY = Input.GetAxis("Mouse Y") * sensitivity * Time.deltaTime;
 
-        rotationSpeed -= _mouseY;
+        rotationSpeed -= mouseY;
         rotationSpeed = Mathf.Clamp(rotationSpeed, -90f, 90f);
 
         playerCamera.transform.localRotation = Quaternion.Euler(rotationSpeed, 0, 0);
 
-        transform.Rotate(Vector3.up * _mouseX);
+        transform.Rotate(Vector3.up * mouseX);
     }
 
     void Movement()
     {
-        float _horizontalInput = Input.GetAxis("Horizontal");
-        float _verticalInput = Input.GetAxis("Vertical");
+        float horizontalInput = Input.GetAxis("Horizontal");
+        float verticalInput = Input.GetAxis("Vertical");
 
-        Vector3 _move = transform.right * _horizontalInput + transform.forward * _verticalInput;
+        Vector3 move = transform.right * horizontalInput + transform.forward * verticalInput;
 
-        playerCC.Move(_move * moveSpeed * Time.deltaTime);
+        playerCC.Move(move * moveSpeed * Time.deltaTime);
 
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
@@ -148,33 +148,33 @@ public class PlayerController : MonoBehaviour
 
     public GameObject GetNextObject()
     {
-        GameObject _nextBullet = NextInactiveBullet();
+        GameObject nextBullet = NextInactiveBullet();
         currentIndex = (currentIndex + 1) % bulletPoolSize; //Cycle through the pool 
-        _nextBullet.transform.position = ProjectileSocket.transform.position;
-        _nextBullet.transform.rotation = ProjectileSocket.transform.rotation;
-        _nextBullet.SetActive(true); //Everytime next bullet is called set transforms and turn it on
+        nextBullet.transform.position = ProjectileSocket.transform.position;
+        nextBullet.transform.rotation = ProjectileSocket.transform.rotation;
+        nextBullet.SetActive(true); //Everytime next bullet is called set transforms and turn it on
 
-        return _nextBullet;
+        return nextBullet;
     }
 
     GameObject NextInactiveBullet()
     {
-        GameObject _nextBullet;
+        GameObject nextBullet;
 
-        var _inactiveBullets = bulletsPool.Where(b => b.activeSelf == false).ToList();
-        if (_inactiveBullets.Count == 0) 
+        var inactiveBullets = bulletsPool.Where(b => b.activeSelf == false).ToList();
+        if (inactiveBullets.Count == 0) 
         {
             BulletPrefab = Instantiate(BulletPrefab, ProjectileSocket.transform.position, ProjectileSocket.transform.rotation);
 
             bulletsPool.Add(BulletPrefab);
-            _nextBullet = BulletPrefab;
+            nextBullet = BulletPrefab;
             BulletPrefab.SetActive(false);
         }
         else
         {
-            _nextBullet = _inactiveBullets.First();
+            nextBullet = inactiveBullets.First();
         }
-        return _nextBullet;
+        return nextBullet;
     }
 
     IEnumerator ShootingDelay() //Courutine of 1 second

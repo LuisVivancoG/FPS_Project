@@ -50,11 +50,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Hp: 30
-  AttackDamage: 0
-  ReactionSpeed: 2
+  AttackDamage: 5
+  MoveSpeed: 3.5
+  FleeSpeed: 8
+  ReactionSpeed: 5
   AttackRange: 2
-  TargetInRange: 0
-  Scared: 0
 --- !u!114 &4250325001269108135
 MonoBehaviour:
   m_ObjectHideFlags: 0
