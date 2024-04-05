@@ -7,6 +7,7 @@ public class Buttons : MonoBehaviour
 {
     [SerializeField] Animator Transition;
     [SerializeField] float TransitionTime;
+    [SerializeField] AudioManager audioManager;
 
     public void ChangeScene ()
     {
@@ -15,6 +16,7 @@ public class Buttons : MonoBehaviour
 
     IEnumerator LoadScene (int levelIndex)
     {
+        audioManager.Play("Tap");
         Transition.SetTrigger("Start");
         yield return new WaitForSeconds(TransitionTime);
         SceneManager.LoadScene(levelIndex);
@@ -22,6 +24,7 @@ public class Buttons : MonoBehaviour
 
     public void ExitGame()
     {
+        audioManager.Play("Tap");
         Application.Quit();
     }
 }

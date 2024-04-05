@@ -16,6 +16,9 @@ public class AgentLinkMover : MonoBehaviour
 {
     public OffMeshLinkMoveMethod MoveMethod = OffMeshLinkMoveMethod.Parabola;
     public AnimationCurve Curve = new AnimationCurve();
+    public delegate void LinkEvent();
+    public LinkEvent OnLinkStart;
+    //public LinkEvent OnLinkEnd;
 
     IEnumerator Start()
     {
@@ -25,6 +28,8 @@ public class AgentLinkMover : MonoBehaviour
         {
             if (agent.isOnOffMeshLink)
             {
+                OnLinkStart?.Invoke();
+
                 if (MoveMethod == OffMeshLinkMoveMethod.NormalSpeed)
                     yield return StartCoroutine(MoveAtNormalSpeed(agent));
                 else if (MoveMethod == OffMeshLinkMoveMethod.Parabola)
@@ -32,6 +37,8 @@ public class AgentLinkMover : MonoBehaviour
                 else if (MoveMethod == OffMeshLinkMoveMethod.Curve)
                     yield return StartCoroutine(MoveCurve(agent, 0.5f));
                 agent.CompleteOffMeshLink();
+
+                //OnLinkEnd?.Invoke();
             }
             yield return null;
         }

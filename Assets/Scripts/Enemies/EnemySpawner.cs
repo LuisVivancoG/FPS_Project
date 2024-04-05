@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemySpawner : MonoBehaviour
 {
@@ -9,7 +10,7 @@ public class EnemySpawner : MonoBehaviour
 
     [SerializeField] GameObject EnemiesCreated;
 
-    [SerializeField] int EnemiesNeeded;
+    [SerializeField] internal int EnemiesNeeded;
     [SerializeField] float SpawnDelay;
 
     [System.Serializable]

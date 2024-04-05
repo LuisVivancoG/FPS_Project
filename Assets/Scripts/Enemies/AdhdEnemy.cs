@@ -2,47 +2,64 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class AdhdEnemy : MonoBehaviour
 {
     [SerializeField] int Hp;
+    [SerializeField] int DmgTaken;
     [SerializeField] int AttackDamage;
     [SerializeField] float MoveSpeed;
     Transform Target;
-    NavMeshAgent agent;
+    [SerializeField] NavMeshAgent agent;
     [SerializeField] float ReactionSpeed;
     [SerializeField] float AttackRange;
-    [SerializeField] bool TargetInRange;
-    //Animator animator;
-
+    bool TargetInRange;
+    [SerializeField] Image HealthBar;
     PlayerController Player;
+    Vector3 lastPlayerPosition;
+    [SerializeField] Animator animator;
+    [SerializeField] AgentLinkMover LinkMover;
+    [SerializeField] Collider EnemyCollider;
+
+    EnemyManager enemyManager;
+    AudioManager audioManager;
 
     private void Awake()
     {
-        agent = GetComponent<NavMeshAgent>();
         Player = FindAnyObjectByType<PlayerController>();
-        //animator = GetComponent<Animator>();
         Target = Player.transform;
+
+        enemyManager = FindAnyObjectByType<EnemyManager>();
+
+        LinkMover.OnLinkStart += HandleLinkStart;
+
+        audioManager = FindAnyObjectByType<AudioManager>();
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        //StartCoroutine(MoveToTarget());
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        Movement();
+        TargetInRange = Vector3.Distance(transform.position, Target.transform.position) <= AttackRange;
+
+        if (Hp > 0)
+        {
+            Movement();
+        }
     }
 
     void Movement()
-    {
-        TargetInRange = Vector3.Distance(transform.position, Target.transform.position) <= AttackRange;
-        
+    {        
         if (TargetInRange)
         {
+            animator.SetBool("isWalking?", false);
+            lastPlayerPosition = Player.transform.position;
             StartCoroutine(AttackTarget());
         }
         else
@@ -53,29 +70,47 @@ public class AdhdEnemy : MonoBehaviour
 
     private IEnumerator AttackTarget()
     {
-        //animator.SetTrigger("isAttacking?");
-        agent.speed = 0;
+        animator.SetTrigger("onRange?");
+        audioManager.Play("CrocoBite");
+        agent.isStopped = true;
         yield return new WaitForSeconds(ReactionSpeed);
-        agent.speed = MoveSpeed;
+        agent.isStopped = false;
     }
 
     private IEnumerator MoveToTarget()
     {
-        agent.speed = MoveSpeed;
+        animator.SetBool("isWalking?", true);
         agent.SetDestination(Target.transform.position);
         yield return new WaitForSeconds(ReactionSpeed);
     }
+    IEnumerator Death()
+    {
+        animator.SetTrigger("isDead?");
+        animator.SetBool("isWalking?", false);
+        enemyManager.IncrementKillsCount();
+        agent.isStopped = true;
+        yield return new WaitForSeconds(2);
+        agent.enabled = false;
+        gameObject.SetActive(false);
+    }
 
-        private void OnDrawGizmos()
+    private void OnDrawGizmos()
     {
         Gizmos.DrawWireSphere(transform.position, AttackRange);
+    }
+
+    void HandleLinkStart()
+    {
+        animator.SetTrigger("isJumping");
     }
 
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == "Bullets")
         {
-            Hp -= 10;
+            audioManager.Play("PiranhaHit");
+            HealthBar.fillAmount -= (HealthBar.fillAmount / (Hp / DmgTaken));
+            Hp -= DmgTaken;
             CheckHP();
         }
 
@@ -89,7 +124,16 @@ public class AdhdEnemy : MonoBehaviour
     {
         if (Hp <= 0)
         {
-            gameObject.SetActive(false);
+            EnemyCollider.enabled = false;
+            StartCoroutine(Death());
         }
+    }
+    private void OnEnable()
+    {
+        EnemyCollider.enabled = true;
+        agent.isStopped = false;
+        agent.speed = MoveSpeed;
+        agent.enabled = true;
+        HealthBar.fillAmount = 1;
     }
 }

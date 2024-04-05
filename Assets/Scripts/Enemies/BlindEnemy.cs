@@ -3,29 +3,41 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class BlindEnemy : MonoBehaviour
 {
     [SerializeField] int Hp;
+    [SerializeField] int DmgTaken;
     [SerializeField] int AttackDamage;
     [SerializeField] float MoveSpeed;
     [SerializeField] float FleeSpeed;
     Transform Target;
-    NavMeshAgent agent;
+    [SerializeField] NavMeshAgent agent;
     [SerializeField] float ReactionSpeed;
     [SerializeField] float AttackRange;
     bool TargetInRange;
     bool Scared;
-    //Animator animator;
+    Vector3 lastPlayerPosition;
+    [SerializeField] Animator animator;
+    [SerializeField] AgentLinkMover LinkMover;
+    [SerializeField] Image HealthBar;
+    [SerializeField] Collider EnemyCollider;
 
     PlayerController Player;
+    EnemyManager enemyManager;
+    AudioManager audioManager;
 
     private void Awake()
     {
-        agent = GetComponent<NavMeshAgent>();
         Player = FindAnyObjectByType<PlayerController>();
-        //animator = GetComponent<Animator>();
         Target = Player.transform;
+
+        enemyManager = FindAnyObjectByType<EnemyManager>();
+
+        LinkMover.OnLinkStart += HandleLinkStart;
+
+        audioManager = FindAnyObjectByType<AudioManager>();
     }
 
     // Start is called before the first frame update
@@ -37,22 +49,27 @@ public class BlindEnemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Scared == false)
+        TargetInRange = Vector3.Distance(transform.position, Target.transform.position) <= AttackRange;
+
+        if (Hp > 0)
         {
-            Movement();
-        }
-        else
-        {
-            RunAway();
+            if (Scared == false)
+            {
+                Movement();
+            }
+            else
+            {
+                RunAway();
+            }
         }
     }
 
     void Movement()
     {
-        TargetInRange = Vector3.Distance(transform.position, Target.transform.position) <= AttackRange;
-
         if (TargetInRange)
         {
+            animator.SetBool("isWalking?", false);
+            lastPlayerPosition = Player.transform.position;
             StartCoroutine(AttackTarget());
         }
         else
@@ -63,28 +80,47 @@ public class BlindEnemy : MonoBehaviour
 
     private IEnumerator AttackTarget()
     {
-        //animator.SetTrigger("isAttacking?");
-        agent.speed = 0;
+        animator.SetTrigger("onRange?");
+        audioManager.Play("CrocoBite");
+        agent.isStopped = true;
         yield return new WaitForSeconds(ReactionSpeed);
-        agent.speed = MoveSpeed;
+        agent.isStopped = false;
     }
 
     private IEnumerator MoveToTarget()
     {
+        animator.SetBool("isWalking?", true);
         agent.SetDestination(Target.transform.position);
         yield return new WaitForSeconds(ReactionSpeed);
     }
+    IEnumerator Death()
+    {
+        animator.SetTrigger("isDead?");
+        animator.SetBool("isWalking?", false);
+        enemyManager.IncrementKillsCount();
+        agent.isStopped = true;
+        yield return new WaitForSeconds(2);
+        agent.enabled = false;
+        gameObject.SetActive(false);
+    }
 
-        private void OnDrawGizmos()
+    private void OnDrawGizmos()
     {
         Gizmos.DrawWireSphere(transform.position, AttackRange);
+    }
+    void HandleLinkStart()
+    {
+        animator.SetTrigger("isJumping");
     }
 
     private void OnCollisionEnter(Collision collision)
     {
+
         if (collision.gameObject.tag == "Bullets")
         {
-            Hp -= 10;
+            audioManager.Play("PiranhaHit");
+            HealthBar.fillAmount -= (HealthBar.fillAmount / (Hp / DmgTaken));
+            Hp -= DmgTaken;
             CheckHP();
         }
 
@@ -96,6 +132,7 @@ public class BlindEnemy : MonoBehaviour
 
     void RunAway()
     {
+        animator.SetTrigger("isRunning?");
         agent.speed = FleeSpeed;
         Vector3 safeDistance = transform.position - Player.transform.position;
         Vector3 newPos = transform.position + safeDistance;
@@ -110,6 +147,7 @@ public class BlindEnemy : MonoBehaviour
             if (flee >= 12)
             {
                 Scared = true;
+                audioManager.Play("Scream");
                 if (Scared)
                 {
                     RunAway();
@@ -117,14 +155,23 @@ public class BlindEnemy : MonoBehaviour
             }
             else
             {
-                Scared= false;
+                Scared = false;
                 Movement();
             }
         }
 
         if (Hp <= 0)
         {
-            gameObject.SetActive(false);
+            EnemyCollider.enabled = false;
+            StartCoroutine(Death());
         }
+    }
+    private void OnEnable()
+    {
+        EnemyCollider.enabled = true;
+        agent.isStopped = false;
+        agent.speed = MoveSpeed;
+        agent.enabled = true;
+        HealthBar.fillAmount = 1;
     }
 }

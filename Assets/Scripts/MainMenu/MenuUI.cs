@@ -11,8 +11,10 @@ public class MenuUI : MonoBehaviour
     [SerializeField] float transition;
     bool inputReceived;
 
-    [Space]
-    public bool outputReceived;
+    [SerializeField] GameObject PromptGO;
+    [SerializeField] GameObject MainMenu;
+
+    [SerializeField] AudioManager audioManager;
 
     // Start is called before the first frame update
     void Start()
@@ -25,8 +27,13 @@ public class MenuUI : MonoBehaviour
     {
         if (Input.anyKeyDown)
         {
+            audioManager.Play("Tap");
+            StopCoroutine(WaitForInput());
             inputReceived = true;
             Prompt.gameObject.SetActive(false);
+
+            PromptGO.SetActive(false);
+            MainMenu.SetActive(true);
         }
     }
 

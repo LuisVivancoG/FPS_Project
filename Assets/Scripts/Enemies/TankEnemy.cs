@@ -2,28 +2,42 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class TankEnemy : MonoBehaviour
 {
     [SerializeField] int Hp;
+    [SerializeField] int DmgTaken;
     [SerializeField] int AttackDamage;
     [SerializeField] float MoveSpeed;
     [SerializeField] int MoveSpeedMultiplier;
     Transform Target;
     [SerializeField] float ChargeRange;
-    NavMeshAgent agent;
+    [SerializeField] NavMeshAgent agent;
     [SerializeField] float ReactionSpeed;
-    [SerializeField] bool TargetInChargeRange;
-    //Animator animator;
+    [SerializeField] float ChannelChargeAtk;
+    bool targetInRange;
+    Vector3 lastPlayerPosition;
+    [SerializeField] Image HealthBar;
 
     PlayerController Player;
+    EnemyManager enemyManager;
+
+    [SerializeField] Animator animator;
+    [SerializeField] AgentLinkMover LinkMover;
+    [SerializeField] Collider EnemyCollider;
+    AudioManager audioManager;
 
     private void Awake()
     {
-        agent = GetComponent<NavMeshAgent>();
         Player = FindAnyObjectByType<PlayerController>();
-        //animator = GetComponent<Animator>();
         Target = Player.transform;
+
+        enemyManager = FindAnyObjectByType<EnemyManager>();
+
+        LinkMover.OnLinkStart += HandleLinkStart;
+
+        audioManager = FindAnyObjectByType<AudioManager>();
     }
 
     // Start is called before the first frame update
@@ -35,15 +49,21 @@ public class TankEnemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Movement();
+        targetInRange = Vector3.Distance(transform.position, Target.transform.position) <= ChargeRange;
+
+
+        if (Hp > 0)
+        {
+            Movement();
+        }
     }
 
     void Movement()
     {
-        TargetInChargeRange = Vector3.Distance(transform.position, Target.transform.position) <= ChargeRange;
-        
-        if (TargetInChargeRange)
+        if (targetInRange)
         {
+            animator.SetBool("isWalking?", false);
+            lastPlayerPosition = Player.transform.position;
             StartCoroutine(ChargeToTarget());
         }
         else
@@ -52,26 +72,47 @@ public class TankEnemy : MonoBehaviour
         }
     }
 
+    void HandleLinkStart()
+    {
+        animator.SetTrigger("isJumping");
+    }
+
     private IEnumerator ChargeToTarget()
     {
-        agent.speed = MoveSpeed * MoveSpeedMultiplier;
-        //agent.angularSpeed = 20;
+        animator.SetTrigger("onRange?");
+        audioManager.Play("Rage");
+        agent.isStopped = true;
         agent.autoBraking = false;
-        agent.SetDestination(Target.transform.position);
-        yield return new WaitForSeconds(ReactionSpeed);
-        agent.speed = MoveSpeed;
-        agent.autoBraking = true;
+        agent.speed = MoveSpeed * MoveSpeedMultiplier;
+        agent.acceleration = 20;
+        agent.SetDestination(lastPlayerPosition);
+        yield return new WaitForSeconds(ChannelChargeAtk);
+
+        agent.isStopped = false;
     }
 
     private IEnumerator MoveToTarget()
     {
+        animator.SetBool("isWalking?", true);
         agent.speed = MoveSpeed;
-        //agent.angularSpeed = 100;
+        agent.autoBraking = true;
+        agent.acceleration = 8;
         agent.SetDestination(Target.transform.position);
         yield return new WaitForSeconds(ReactionSpeed);
     }
 
-        private void OnDrawGizmos()
+    IEnumerator Death()
+    {
+        animator.SetTrigger("isDead?");
+        animator.SetBool("isWalking?", false);
+        agent.isStopped = true;
+        yield return new WaitForSeconds(2);
+        agent.enabled = false;
+        enemyManager.IncrementKillsCount();
+        gameObject.SetActive(false);
+    }
+
+    private void OnDrawGizmos()
     {
         Gizmos.DrawWireSphere(transform.position, ChargeRange);
     }
@@ -80,7 +121,9 @@ public class TankEnemy : MonoBehaviour
     {
         if (collision.gameObject.tag == "Bullets")
         {
-            Hp -= 10;
+            audioManager.Play("PiranhaHit");
+            HealthBar.fillAmount -= (HealthBar.fillAmount / (Hp / DmgTaken));
+            Hp -= DmgTaken;
             CheckHP();
         }
 
@@ -94,7 +137,16 @@ public class TankEnemy : MonoBehaviour
     {
         if (Hp <= 0)
         {
-            gameObject.SetActive(false);
+            EnemyCollider.enabled = false;
+            StartCoroutine(Death());
         }
+    }
+    private void OnEnable()
+    {
+        EnemyCollider.enabled = true;
+        agent.isStopped = false;
+        agent.speed = MoveSpeed;
+        agent.enabled = true;
+        HealthBar.fillAmount = 1;
     }
 }

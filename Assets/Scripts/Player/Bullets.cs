@@ -6,6 +6,11 @@ public class Bullets : MonoBehaviour
 {
     [SerializeField] int forceSpeed;
 
+    void Awake()
+    {
+
+    }
+
     void OnEnable()
     {
         Shoot();

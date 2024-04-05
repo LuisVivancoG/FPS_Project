@@ -17,7 +17,7 @@ public class UIDetector : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            uIControls.GameplayUI();
+            uIControls.DungeonUI();
         }
     }
 }

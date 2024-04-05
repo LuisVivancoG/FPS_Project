@@ -120,6 +120,63 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1001 &7882266
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4490821856722399901, guid: f5dc017de80d6ea4493d48153b04546b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -4.3594007
+      objectReference: {fileID: 0}
+    - target: {fileID: 4490821856722399901, guid: f5dc017de80d6ea4493d48153b04546b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 4.251507
+      objectReference: {fileID: 0}
+    - target: {fileID: 4490821856722399901, guid: f5dc017de80d6ea4493d48153b04546b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 8.348278
+      objectReference: {fileID: 0}
+    - target: {fileID: 4490821856722399901, guid: f5dc017de80d6ea4493d48153b04546b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4490821856722399901, guid: f5dc017de80d6ea4493d48153b04546b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4490821856722399901, guid: f5dc017de80d6ea4493d48153b04546b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4490821856722399901, guid: f5dc017de80d6ea4493d48153b04546b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4490821856722399901, guid: f5dc017de80d6ea4493d48153b04546b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4490821856722399901, guid: f5dc017de80d6ea4493d48153b04546b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4490821856722399901, guid: f5dc017de80d6ea4493d48153b04546b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4844046254960572220, guid: f5dc017de80d6ea4493d48153b04546b, type: 3}
+      propertyPath: m_Name
+      value: AudioManager
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: f5dc017de80d6ea4493d48153b04546b, type: 3}
 --- !u!1 &141574170
 GameObject:
   m_ObjectHideFlags: 0
@@ -137,7 +194,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &141574171
 RectTransform:
   m_ObjectHideFlags: 0
@@ -397,6 +454,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!114 &697531144 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6942914208188231951, guid: f5dc017de80d6ea4493d48153b04546b, type: 3}
+  m_PrefabInstance: {fileID: 7882266}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4104a401b6f82c4090cdb6e0c2b162c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &734090226
 GameObject:
   m_ObjectHideFlags: 0
@@ -509,7 +577,9 @@ MonoBehaviour:
   Prompt: {fileID: 141574172}
   flickrSeconds: 1
   transition: 0.25
-  outputReceived: 0
+  PromptGO: {fileID: 141574170}
+  MainMenu: {fileID: 1962090027}
+  audioManager: {fileID: 697531144}
 --- !u!4 &790543324
 Transform:
   m_ObjectHideFlags: 0
@@ -539,6 +609,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Transition: {fileID: 1069497109}
   TransitionTime: 1
+  audioManager: {fileID: 697531144}
 --- !u!1 &818523387
 GameObject:
   m_ObjectHideFlags: 0
@@ -1371,7 +1442,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1962090028
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1696,3 +1767,4 @@ SceneRoots:
   - {fileID: 790543324}
   - {fileID: 241355435}
   - {fileID: 2011682656}
+  - {fileID: 7882266}

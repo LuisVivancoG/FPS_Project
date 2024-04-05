@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -38,10 +39,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float shootDelay;
     bool cdTimer = true;
 
-    [SerializeField] Canvas pauseCanvas;
-    [SerializeField] Canvas gameplayCanvas;
-    [SerializeField] Canvas galleryCanvas;
-    [SerializeField] UIControls uIControls;
+    [SerializeField] Image ImageColorHealth;
+    [SerializeField] AudioManager audioManager;
 
     // Start is called before the first frame update
     void Start()
@@ -70,6 +69,7 @@ public class PlayerController : MonoBehaviour
         // Spawn projectile
         if (Input.GetMouseButtonDown(0) && cdTimer == true && Time.timeScale != 0)
         {
+            audioManager.Play("PiranhaCannon");
             GameObject _nextBullet = GetNextObject();
             _nextBullet.SetActive(true);
 
@@ -77,7 +77,6 @@ public class PlayerController : MonoBehaviour
 
             StartCoroutine(ShootingDelay());
         }
-        Pause();
     }
 
     void CameraRotation()
@@ -118,6 +117,9 @@ public class PlayerController : MonoBehaviour
     {
         if (isinvulnerable == false)
         {
+            Vector3 newSizeImage = ImageColorHealth.transform.localScale / (Health - (float)Damage);
+
+            ImageColorHealth.transform.localScale -= newSizeImage;
             Health -= Damage;
             //Debug.Log("Player current hp is " + Health);
             StartCoroutine(Invulnerability());
@@ -191,25 +193,5 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(RecoverTime);
 
         isinvulnerable = false;
-    }
-
-    private void Pause()
-    {
-        if (Input.GetButton("Cancel"))
-        {
-            if (uIControls.InGallery == true)
-            {
-                galleryCanvas.GetComponent<Canvas>().enabled = false;
-            }
-            if (uIControls.InGameplay == true)
-            {
-                gameplayCanvas.GetComponent<Canvas>().enabled = false;
-            }
-
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-            pauseCanvas.GetComponent<Canvas>().enabled = true;
-            Time.timeScale = 0f;
-        }
     }
 }
